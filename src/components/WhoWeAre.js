@@ -7,7 +7,7 @@ export const WhoWeAre = () => {
     <div className="flex flex-col lg:flex-row items-center justify-center p-8 lg:p-16">
       {/* Image */}
       <div className="mb-8 lg:mb-0">
-        <img src="assets/cover.png" className="w-[597px] h-[442px] shadow-sm lg:shadow-lg" alt="Cover" />
+        <img src="assets/who we are.jpg" className="w-[597px] h-[442px] shadow-sm lg:shadow-lg" alt="Cover" />
       </div>
 
       {/* Text Content */}

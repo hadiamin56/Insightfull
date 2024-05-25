@@ -10,18 +10,23 @@ import { TitlleWhoWeAre } from "./TitlleWhoWeAre";
 import { WhoWeAre } from "./WhoWeAre";
 import { TitleGetInTo } from "./TitleGetInTo";
 import { GetInTouch } from "./GetInTouch";
+import { Analytics } from "./Analytics";
+import { ContactBar } from "./ContactBar";
 export const Homepage = () => {
   return (
     <div className="">
-      <Header/>
+      
+      <Header className='bg-cover bg-center ' style={{backgroundImage: 'url(assets/cover.png)'}} />
       <SlideInfo/>
       <InfoCards/>
+      <Analytics/>
       <TitlePractice/>
       <PracticeSectors/>
       <TitlleWhoWeAre/>
       <WhoWeAre/>
       <TitleGetInTo/>
       <GetInTouch/>
+      <ContactBar/>
       <FooterCom/>
     </div>
   )
