@@ -19,7 +19,7 @@ const ContactForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5500/app/signup",
+        "https://insightfull.vercel.app/signup",
         formData
       );
       console.log("Form successfully submitted");

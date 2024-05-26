@@ -10,7 +10,7 @@ export const Consulting = () => {
 
       <div className="flex flex-col items-center justify-center p-6 md:p-12">
         <div>
-          <h2 className="text-3xl md:text-4xl font-rubix font-bold rubik-maintitle">
+          <h2 className="text-2xl md:text-4xl font-rubix font-bold rubik-maintitle">
             Consulting
           </h2>
         </div>
