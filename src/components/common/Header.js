@@ -19,6 +19,7 @@ export const Header = () => {
   };
 
   return (
+    
     <div className=' z-5 mt-2 '>
       <div className='flex h-[90px] items-center justify-between px-4 lg:px-0  rubik-subtitles'>
         <div className='lg:ml-[90px]  '> 
@@ -65,7 +66,8 @@ export const Header = () => {
                 </div>
               )}
             </div>
-            <div>Join us</div>
+            
+            <Link to ="/Joinus">Join Us</Link>
             <Link to="/Industries">Industries</Link>
             <Link to="/contactus">Contact</Link>
           </div>
@@ -80,15 +82,17 @@ export const Header = () => {
         <span onClick={toggleDropdown}>Services</span>
         {dropdownOpen && (
           <div className="absolute bg-white shadow-lg mt-2 py-2 w-48 rounded-lg border" onMouseLeave={closeDropdown}>
-            <Link to="/#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Consulting</Link>
-            <Link to="/#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reports and Subscriptions</Link>
-            <Link to="/#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Insights</Link>
+            <Link to="/Consulting" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Consulting</Link>
+            <Link to="/reportandsubs" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reports and Subscriptions</Link>
+            <Link to="/Insights" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Insights</Link>
           </div>
         )}
       </span>
     </div>
-    <div className="text-center mb-4">Industries</div>
-    <div className="text-center mb-4">Join us</div>
+
+            <Link to ="/Joinus" className="text-center mb-4">Join Us</Link>
+            <Link to="/Industries" className="text-center mb-4">Industries</Link>
+    
     <div className="text-center">
       <Link to="/contactus">Contact</Link>
     </div>

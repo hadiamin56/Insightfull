@@ -10,12 +10,12 @@ export const Consulting = () => {
 
       <div className="flex flex-col items-center justify-center p-6 md:p-12">
         <div>
-          <h2 className="text-2xl md:text-4xl font-rubix font-bold rubik-maintitle">
+          <h2 className="text-2xl md:text-2xl font-rubix font-bold rubik-maintitle">
             Consulting
           </h2>
         </div>
         <div className="max-w-7xl">
-          <p className="text-center leading-7 rubik-subtitles">
+          <p className="text-center leading-7 rubik-subtitles text-md">
             We facilitate clients’ ability to make decisions that are
             data-driven and well-informed. We help clients identify new trends,
             better understand markets and competitors, create strategies,
@@ -42,7 +42,6 @@ export const Consulting = () => {
           </div>
         </div>
       </div>
-      
       <FooterCom />
     </div>
   );

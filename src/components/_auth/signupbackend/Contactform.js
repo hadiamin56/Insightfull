@@ -5,9 +5,9 @@ import axios from "axios";
 const ContactForm = () => {
   const [formData, setFormData] = useState({
     fullName: "",
-    username: "",
+    contactnumber: "",
     email: "",
-    password: "",
+    Reason: "",
   });
 
   const handleChange = (e) => {
@@ -30,7 +30,7 @@ const ContactForm = () => {
 
   return (
     <div
-      className="h-[821px] bg-cover bg-center p-10"
+      className="h-[500px] bg-cover bg-center p-10"
       style={{ backgroundImage: "url(assets/cover.png)" }}
     >
       <div className="max-w-screen-lg mx-auto">
@@ -51,14 +51,15 @@ const ContactForm = () => {
               onChange={handleChange}
               required
             />
+    
 
             <input
               type="text"
-              id="username"
+              id="contactnumber"
               className="input-field"
-              placeholder="Username"
-              name="username"
-              value={formData.username}
+              placeholder="Contact Number"
+              name="contactnumber"
+              value={formData.contactnumber}
               onChange={handleChange}
               required
             />
@@ -77,18 +78,18 @@ const ContactForm = () => {
             />
 
             <input
-              type="password"
-              id="password"
+              type="text"
+              id="Reason"
               className="input-field"
-              placeholder="Password"
-              name="password"
-              value={formData.password}
+              placeholder="Reason"
+              name="Reason"
+              value={formData.Reason}
               onChange={handleChange}
               required
             />
           </div>
 
-          <button type="submit" className="btn-submit">Sign Up</button>
+          <button type="submit" className="btn-submit rubik-maintitle">Submit</button>
         </form>
       </div>
     </div>

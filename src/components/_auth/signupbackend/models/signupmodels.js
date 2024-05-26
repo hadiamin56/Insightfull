@@ -6,7 +6,7 @@ const signUpTemplate = new mongoose.Schema({
         type:String,
         required:true
     },
-    username:{
+    contactnumber:{
         type:String,
         required:true
     },
@@ -14,7 +14,7 @@ const signUpTemplate = new mongoose.Schema({
         type:String,
         required:true
     },
-    password:{
+    Reason:{
         type:String,
         required:true
     },

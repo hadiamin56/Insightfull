@@ -2,7 +2,7 @@ import React from 'react'
 
 export const TitleContact = () => {
   return (
-
+    
     <div className="flex flex-col items-center justify-center p-[45px]">
     <div>
       <h2 className="text-2xl font-rubix font-bold">Contact Us</h2>

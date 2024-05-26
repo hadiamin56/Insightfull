@@ -7,10 +7,10 @@ router.use(express.urlencoded({ extended: true }));
 
 router.post('/signup', async (request, response) => {
     try {
-        const { fullName, username, email, password } = request.body;
+        const { fullName, contactnumber, email, Reason } = request.body;
 
         // Create a new user
-        const newUser = new User({ fullName, username, email, password });
+        const newUser = new User({ fullName, contactnumber, email, Reason });
         const savedUser = await newUser.save();
 
         response.json(savedUser);
