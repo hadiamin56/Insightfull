@@ -54,7 +54,7 @@ the two major realms of Classical physics: Newtonian mechanics
           ></img>
           <div className="absolute top-[550px]  w-[322px]">
             <div className="">
-              <p className="text-white  text-md font-bold ml-4">
+              <p className="text-white  text-md font-bold ml-4 rubik-maintitle">
                 Market Analysis reports
               </p>
             </div>
