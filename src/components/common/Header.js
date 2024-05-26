@@ -61,7 +61,7 @@ export const Header = () => {
                 <div className="absolute bg-white shadow-lg mt-2 py-2 w-48 rounded-lg border" onMouseLeave={closeDropdown}>
                   <Link to="/Consulting" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Consulting</Link>
                   <Link to="/reportandsubs" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reports and Subscriptions</Link>
-                  <Link to="/#" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Insights</Link>
+                  <Link to="/Insights" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Insights</Link>
                 </div>
               )}
             </div>

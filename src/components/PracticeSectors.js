@@ -10,8 +10,8 @@ export const PracticeSectors = () => {
         <div className="  shadow-md shadow-black-600 w-[232px] "> 
         <a href="https://fonts.google.com/knowledge/using_type/installing_and_managing_fonts">
           <div className="flex flex-col px-6 ">
-            <h2 className="text-md font-bold mt-5">Basic Chemicals</h2>
-            <p className="text-sm mt-5 text-gray-600">
+            <h2 className="text-md font-bold mt-5 rubik-maintitle">Basic Chemicals</h2>
+            <p className="text-sm mt-5 text-gray-600 rubik-subtitle">
               Newton thought that light was made up of particles, <br></br>but
               then it was discovered
             </p>
@@ -25,8 +25,8 @@ export const PracticeSectors = () => {
         </div>
         <div className="  shadow-md shadow-black-600 w-[232px] ">
           <div className="flex flex-col px-6 ">
-            <h2 className="text-md font-bold mt-5">Specialty Chemicals</h2>
-            <p className="text-sm mt-5 text-gray-600">
+            <h2 className="text-md font-bold mt-5 rubik-maintitle">Specialty Chemicals</h2>
+            <p className="text-sm mt-5 text-gray-600 rubik-subtitle">
               Newton thought that light was made up of particles, <br></br>but
               then it was discovered{" "}
             </p>
@@ -42,8 +42,8 @@ export const PracticeSectors = () => {
     <div className="flex flex-col md:flex-row gap-[50px] w-fit p-2">
         <div className="  shadow-md shadow-black-600 w-[232px] ">
           <div className="flex flex-col px-6 ">
-            <h2 className="text-md font-bold mt-5">Plastic and Polymers</h2>
-            <p className="text-sm mt-5 text-gray-600">
+            <h2 className="text-md font-bold mt-5 rubik-maintitle">Plastic and Polymers</h2>
+            <p className="text-sm mt-5 text-gray-600 rubik-subtitle">
               Newton thought that light was made up of particles, <br></br>but
               then it was discovered{" "}
             </p>

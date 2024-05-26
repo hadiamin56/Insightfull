@@ -11,10 +11,10 @@ export const Industries = () => {
     <Header/>
     <div> <div className="flex flex-col items-center justify-center p-[45px]">
       <div>
-        <h2 className="text-2xl font-rubix font-bold">Industries</h2>
+        <h2 className="text-2xl font-rubix font-bold rubik-maintitle">Industries</h2>
       </div>
       <div className="">
-        <p className="text-center leading-5">
+        <p className="text-center leading-5 rubik-subtitle">
           Problems trying to resolve the conflict between<br></br> the two major realms
           of Classical physics: Newtonian mechanics
         </p>

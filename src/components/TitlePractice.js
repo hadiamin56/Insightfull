@@ -4,10 +4,10 @@ export const TitlePractice = () => {
   return (
         <div className="flex flex-col items-center justify-center p-[45px]">
       <div>
-        <h2 className="text-2xl font-rubix font-bold">Practice Sectors</h2>
+        <h2 className="text-2xl font-rubix font-bold rubik-maintitle">Practice Sectors</h2>
       </div>
       <div className="">
-        <p className="text-center leading-5">
+        <p className="text-center leading-5 rubik-subtitles">
           Problems trying to resolve the conflict between<br></br> the two major realms
           of Classical physics: Newtonian mechanics
         </p>

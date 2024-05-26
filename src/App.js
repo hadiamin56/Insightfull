@@ -6,6 +6,7 @@ import { Industries } from './components/Industries';
 import { Reportssubs } from './components/Reportssubs';
 import './App.css';
 import { Consulting } from './components/Consulting';
+import { Insights } from './components/Insights';
 
 
 function App() {
@@ -17,11 +18,7 @@ function App() {
         <Route path="/Industries" element={<Industries />} />
         <Route path="/reportandsubs" element={<Reportssubs />} />
         <Route path="/Consulting" element={<Consulting />} />
-
-
-        
-
-      
+        <Route path="/Insights" element={<Insights />} />
 
 
       </Routes>
