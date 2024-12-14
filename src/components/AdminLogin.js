@@ -12,7 +12,7 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://sql7.freemysqlhosting.net/api/admin/login", {
+      const response = await axios.post("sql7.freemysqlhosting.net/api/admin/login", {
         username,
         password,
       });
@@ -28,7 +28,7 @@ const AdminLogin = () => {
 
   const fetchUserQueries = async () => {
     try {
-      const response = await axios.get("https://sql7.freemysqlhosting.net/api/admin/user-queries");
+      const response = await axios.get("sql7.freemysqlhosting.net/api/admin/user-queries");
       setQueries(response.data);
       // After fetching the data, redirect to the details page
       navigate("/details"); // Redirect to the details page
