@@ -6,7 +6,7 @@ const DetailsPage = () => {
 
   const handleCardClick = (card) => {
     if (card === "userQueries") {
-      navigate("/user-queries"); // Redirect to the user queries table page
+      navigate("/queries"); // Redirect to the user queries table page
     } else {
       navigate("/sample"); // Redirect to sample page, you can add more functionality in the future
     }

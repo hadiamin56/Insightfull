@@ -27,7 +27,7 @@ function App() {
         <Route path="/Joinus" element={<Joinus />} />
         <Route path="/Login" element={<AdminLogin />} />
         <Route path="/details" element={<DetailsPage />} />
-        <Route path="/user-queries" element={<UserQueriesPage />} />
+        <Route path="/queries" element={<UserQueriesPage />} />
         <Route path="/sample" element={<div>Sample Page (future use)</div>} />
 
 

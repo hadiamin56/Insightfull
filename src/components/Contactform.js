@@ -19,15 +19,15 @@ const ContactForm = () => {
     };
 
     try {
-      const response = await fetch('https://insightfull.vercel.app/api/form', {
+      // Send POST request to your local server (backend)
+      const response = await fetch('http://localhost:5000/api/form', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-        credentials: 'include',  // Use if you need to include cookies/session info
       });
-      
+
       const text = await response.text(); // Read response as text
       console.log("Response Text: ", text); // Log the response content
 
