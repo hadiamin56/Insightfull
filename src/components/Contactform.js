@@ -19,22 +19,30 @@ const ContactForm = () => {
     };
 
     try {
-      const response = await fetch("sql7.freemysqlhosting.net/api/form", {
-        method: "POST",
+      const response = await fetch('https://insightfull.vercel.app/api/form', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
+        credentials: 'include',  // Use if you need to include cookies/session info
       });
+      
+      const text = await response.text(); // Read response as text
+      console.log("Response Text: ", text); // Log the response content
 
       if (!response.ok) {
-        const errorData = await response.json();  // Handling JSON error
-        throw new Error(errorData.error || "An error occurred");
+        throw new Error("An error occurred, response was not OK");
       }
 
-      const data = await response.json();  // Handling success
-      setSuccessMessage(data.message);  // Display success message
-      setErrorMessage("");  // Clear any previous error messages
+      // Check if the response is JSON and try parsing it
+      try {
+        const data = JSON.parse(text);
+        setSuccessMessage(data.message);  // Display success message
+        setErrorMessage("");  // Clear any previous error messages
+      } catch (jsonError) {
+        throw new Error("Response is not in JSON format.");
+      }
 
       // Reset the form fields after successful submission
       setName("");
