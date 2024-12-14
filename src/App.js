@@ -8,6 +8,10 @@ import './App.css';
 import { Consulting } from './components/Consulting';
 import { Insights } from './components/Insights';
 import { Joinus } from './components/Joinus';
+import AdminLogin from "./components/AdminLogin";
+import DetailsPage from "./components/DetailsPage";
+import UserQueriesPage from "./components/UserQueriesPage";
+
 
 
 function App() {
@@ -21,6 +25,12 @@ function App() {
         <Route path="/Consulting" element={<Consulting />} />
         <Route path="/Insights" element={<Insights />} />
         <Route path="/Joinus" element={<Joinus />} />
+        <Route path="/Login" element={<AdminLogin />} />
+        <Route path="/details" element={<DetailsPage />} />
+        <Route path="/user-queries" element={<UserQueriesPage />} />
+        <Route path="/sample" element={<div>Sample Page (future use)</div>} />
+
+
 
 
       </Routes>

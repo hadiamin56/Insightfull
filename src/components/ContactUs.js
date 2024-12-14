@@ -4,7 +4,7 @@ import { TitleContact } from "./TitleContact";
 import { FooterCom } from "./common/FooterCom";
 // import { ContactImageform } from './ContactImageform'
 import { GetInTouch } from "./GetInTouch";
-import Contactform from "./_auth/signupbackend/Contactform";
+import Contactform from "./Contactform";
 
 export const ContactUs = () => {
   return (
