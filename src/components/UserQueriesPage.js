@@ -8,7 +8,8 @@ const UserQueriesPage = () => {
   useEffect(() => {
     const fetchQueries = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/admin/user-queries");
+        // Update the URL to match your server route
+        const response = await axios.get("http://localhost:5000/api/admin/queries");
         setQueries(response.data);
         setLoading(false);
       } catch (err) {

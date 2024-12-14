@@ -12,7 +12,7 @@ const AdminLogin = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://insightfull.vercel.app/api/admin/login", {
+      const response = await axios.post("http://localhost:5000/api/admin/login", {
         username,
         password,
       });
@@ -28,11 +28,13 @@ const AdminLogin = () => {
 
   const fetchUserQueries = async () => {
     try {
-      const response = await axios.get("https://insightfull.vercel.app/api/admin/user-queries");
+      const response = await axios.get("http://localhost:5000/api/admin/queries");
       setQueries(response.data);
+      console.log("Fetched queries:", response.data); // Log fetched queries for debugging
       // After fetching the data, redirect to the details page
       navigate("/details"); // Redirect to the details page
     } catch (err) {
+      console.error("Error fetching queries:", err);  // Log the error details
       setMessage(err.response?.data?.error || "An error occurred while fetching queries");
     }
   };
