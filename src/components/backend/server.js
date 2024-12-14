@@ -3,33 +3,35 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require("mysql2");
 
+require('dotenv').config(); // To load .env variables
 const app = express();
-app.use(cors({ origin: 'http://localhost:3000' }));
 
 app.use(cors({
-  origin: ["https://insightfull.vercel.app/", "http://localhost:3000"], // Allow local and deployed frontend
+  origin: ["https://insightfull.vercel.app", "http://localhost:3000","https://sql7.freemysqlhosting.net"], // Allow local and deployed frontend
   credentials: true
 }));
 
 // Middleware
-app.use(cors());
 app.use(bodyParser.json());
 
-// MySQL connection
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "9622451242@hH",
-  database: "insightfull",
+
+// Create a MySQL connection
+const connection = mysql.createConnection({
+  host: process.env.DB_HOST ,  // Default to localhost for local
+  user: process.env.DB_USER ,
+  password: process.env.DB_PASSWORD ,
+  database: process.env.DB_NAME ,
 });
 
-db.connect((err) => {
+// Connect to the database
+connection.connect((err) => {
   if (err) {
-    console.error("Error connecting to MySQL:", err);
+    console.error('Database connection error:', err);
     return;
   }
-  console.log("Connected to MySQL");
+  console.log('Connected to the database!');
 });
+
 
 // API endpoint
 app.post("/api/form", (req, res) => {
@@ -38,9 +40,9 @@ app.post("/api/form", (req, res) => {
   db.query(queryStr, [name, email, contact, query], (err, result) => {
     if (err) {
       console.error("Error inserting data:", err);
-      res.status(500).json({ error: "Database error" });  // Updated to send JSON response
+      res.status(500).json({ error: "Database error" });
     } else {
-      res.status(200).json({ message: "Your query has been sent" });  // Sending success as JSON
+      res.status(200).json({ message: "Your query has been sent" });
     }
   });
 });
@@ -49,7 +51,6 @@ app.post("/api/form", (req, res) => {
 app.post("/api/admin/login", (req, res) => {
   const { username, password } = req.body;
 
-  // Query to validate admin credentials
   const queryStr = "SELECT * FROM user WHERE username = ? AND password = ?";
   db.query(queryStr, [username, password], (err, result) => {
     if (err) {
@@ -58,27 +59,13 @@ app.post("/api/admin/login", (req, res) => {
     } else if (result.length === 0) {
       res.status(401).json({ error: "Invalid credentials" });
     } else {
-      // Admin successfully authenticated
       res.status(200).json({ message: "Login successful", admin: result[0] });
     }
   });
 });
 
-// Endpoint to fetch all user queries (protected)
-app.get("/api/admin/user-queries", (req, res) => {
-  const queryStr = "SELECT * FROM user_queries";
-  db.query(queryStr, (err, results) => {
-    if (err) {
-      console.error("Error fetching user queries:", err);
-      res.status(500).json({ error: "Database error" });
-    } else {
-      res.status(200).json(results);
-    }
-  });
-});
-
 // Start server
-const PORT = 5000;  // Make sure the server listens on port 5000
+const PORT = process.env.PORT || 5000; // Use PORT environment variable or default to 5000
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
