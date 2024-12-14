@@ -70,6 +70,7 @@ export const Header = () => {
             <Link to ="/Joinus">Join Us</Link>
             <Link to="/Industries">Industries</Link>
             <Link to="/contactus">Contact</Link>
+            <Link to="/Login">Login</Link>
           </div>
         </div>
       </div>
