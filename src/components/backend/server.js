@@ -6,6 +6,11 @@ const mysql = require("mysql2");
 const app = express();
 app.use(cors({ origin: 'http://localhost:3000' }));
 
+app.use(cors({
+  origin: ["https://insightfull.vercel.app/", "http://localhost:3000"], // Allow local and deployed frontend
+  credentials: true
+}));
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
