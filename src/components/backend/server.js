@@ -13,6 +13,7 @@ console.log("DB_NAME:", process.env.DB_NAME);
 
 // CORS setup: Allow requests from your frontend (localhost:3000)
 const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' ? 'https://insightfull.vercel.app' : 'http://localhost:3000',
   origin: "http://localhost:3000", // Ensure this matches the frontend URL
   methods: "GET,POST",
   credentials: true, // If you need to include cookies or headers
