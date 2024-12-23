@@ -30,11 +30,14 @@ const uploadMemory = multer(); // Default storage (in-memory storage)
 
 // CORS setup: Allow requests from your frontend (localhost:3000)
 const corsOptions = {
-  origin: 'http://localhost:3000', // Replace with your frontend's URL
+  origin: process.env.NODE_ENV === 'production' 
+    ? process.env.NEXT_PUBLIC_FRONTEND_URL // Vercel URL in production
+    : 'http://localhost:3000', // Local URL for development
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow DELETE method
   allowedHeaders: ['Content-Type', 'Authorization'], // Headers to allow
-  credentials: true, // ALLOW CREDENTIALS TO BE TRUE
+  credentials: true, // Allow credentials to be true
 };
+
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
