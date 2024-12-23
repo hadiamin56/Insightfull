@@ -1,5 +1,11 @@
 {
     "name": "insightfull-backend",
+    "builds": [
+      {
+        "src": "backend/api/server.js",
+        "use": "@vercel/node"
+      }
+    ],
     "version": "1.0.0",
     "main": "server.js",
     "scripts": {
@@ -12,4 +18,5 @@
       "cors": "^2.8.5"
     }
   }
+  
   
