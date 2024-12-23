@@ -1,105 +1,182 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { FaChevronDown } from "react-icons/fa"; // Import the icon
 
 export const Header = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Track login state
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [downloadsDropdownOpen, setDownloadsDropdownOpen] = useState(false); // State for Downloads dropdown
+  const navigate = useNavigate();
+  const aboutDropdownRef = useRef(null);
+  const downloadsDropdownRef = useRef(null);
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
+  const toggleDownloadsDropdown = () =>
+    setDownloadsDropdownOpen(!downloadsDropdownOpen);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (
+        aboutDropdownRef.current &&
+        !aboutDropdownRef.current.contains(event.target)
+      ) {
+        setDropdownOpen(false);
+      }
+      if (
+        downloadsDropdownRef.current &&
+        !downloadsDropdownRef.current.contains(event.target)
+      ) {
+        setDownloadsDropdownOpen(false);
+      }
+    };
 
-  const closeDropdown = () => {
-    setDropdownOpen(false);
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, []);
+
+  // Check session status on component mount
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/admin/session",
+          {
+            withCredentials: true,
+          }
+        );
+        setIsLoggedIn(response.data.isLoggedIn);
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkSession();
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await axios.post(
+        "http://localhost:5000/api/admin/logout",
+        {},
+        { withCredentials: true }
+      );
+      setIsLoggedIn(false);
+      navigate("/Login"); // Redirect to login page after logout
+    } catch (err) {
+      console.error("Error during logout:", err);
+    }
   };
 
   return (
-    
-    <div className=' z-5 mt-2 '>
-      <div className='flex h-[90px] items-center justify-between px-4 lg:px-0  rubik-subtitles'>
-        <div className='lg:ml-[90px]  '> 
-          <img src='assets/1.jpg' className='h-[80px]' alt='Logo'/>
-         <p className='-mt-4 leading-tight ml-5 text-[11px] font-bold text-[#1A8F60] rubik-subtitles'>The Chemicals and Fertilizers <br></br> Advisory Company</p>
+    <header className="z-10 mt-2">
+      <div className="flex h-[90px] items-center justify-between px-4 lg:px-0 rubik-subtitles">
+        {/* Logo and Subtitle */}
+        <div className="lg:ml-[90px] flex items-center space-x-4">
+          <img src="assets/1.jpg" className="h-[80px]" alt="Logo" />
         </div>
-        <div className='lg:hidden'>
-          <button onClick={toggleMenu} className='focus:outline-none'>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              className='h-6 w-6'
-              fill='none'
-              viewBox='0 0 24 24'
-              stroke='currentColor'
+
+        {/* Navigation Links */}
+        <nav className="hidden lg:flex lg:items-center lg:mr-[100px] space-x-8 z-5">
+          <Link to="/" className="hover:text-[#1A8F60]">
+            Home
+          </Link>
+
+          {/* About Us Dropdown */}
+          <div className="relative" ref={aboutDropdownRef}>
+            <button
+              onClick={toggleDropdown}
+              className="flex items-center space-x-1 hover:text-[#1A8F60]"
             >
-              {menuOpen ? (
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M6 18L18 6M6 6l12 12'
-                />
-              ) : (
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth={2}
-                  d='M4 6h16M4 12h16m-7 6h7'
-                />
-              )}
-            </svg>
-          </button>
-        </div>
-        <div className='hidden lg:flex lg:items-center lg:mr-[300px] z-5 '>
-          <div className='lg:flex lg:gap-6'>
-            <Link to="/">Home</Link>
-            <div className="relative z-20" onBlur={closeDropdown}>
-              <span onClick={toggleDropdown}>Services</span>
-              {dropdownOpen && (
-                <div className="absolute bg-white shadow-lg mt-2 py-2 w-48 rounded-lg border" onMouseLeave={closeDropdown}>
-                  <Link to="/Consulting" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Consulting</Link>
-                  <Link to="/reportandsubs" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reports and Subscriptions</Link>
-                  <Link to="/Insights" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Insights</Link>
-                </div>
-              )}
-            </div>
-            
-            <Link to ="/Joinus">Join Us</Link>
-            <Link to="/Industries">Industries</Link>
-            <Link to="/contactus">Contact</Link>
-            <Link to="/Login">Login</Link>
+              <span>About Us</span>
+              <FaChevronDown
+                className={`text-m transition-transform duration-300 ${
+                  dropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {dropdownOpen && (
+              <div className="absolute bg-white shadow-lg mt-2 py-2 w-48 rounded-lg border z-20">
+                <Link
+                  to="/Consulting"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                >
+                  Consulting
+                </Link>
+                <Link
+                  to="/reportandsubs"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                >
+                  Reports and Subscriptions
+                </Link>
+                <Link
+                  to="/Insights"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                >
+                  Insights
+                </Link>
+              </div>
+            )}
           </div>
-        </div>
+
+          {/* Downloads Dropdown */}
+          <div className="relative" ref={downloadsDropdownRef}>
+            <button
+              onClick={toggleDownloadsDropdown}
+              className="flex items-center space-x-1 hover:text-[#1A8F60]"
+            >
+              <span>Downloads</span>
+              <FaChevronDown
+                className={`text-m transition-transform duration-300 ${
+                  downloadsDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+            {downloadsDropdownOpen && (
+              <div className="absolute bg-white shadow-lg mt-2 py-2 w-48 rounded-lg border z-20">
+                <Link
+                  to="/Results"
+                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                >
+                  Results
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <Link to="/ViewGallery" className="hover:text-[#1A8F60]">
+            Gallery
+          </Link>
+          <Link to="/Industries" className="hover:text-[#1A8F60]">
+            Industries
+          </Link>
+          <Link to="/contactus" className="hover:text-[#1A8F60]">
+            Contact
+          </Link>
+          {isLoggedIn && (
+            <Link to="/details" className="hover:text-[#1A8F60]">
+              Dashboard
+            </Link>
+          )}
+
+          {/* Login/Logout Button */}
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="text-red-500 hover:underline"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link to="/login" className="text-[#1A8F60] hover:underline">
+              Login
+            </Link>
+          )}
+        </nav>
       </div>
-    <div className={`lg:hidden ${menuOpen ? 'block' : 'hidden'}`}>
-  <div className='lg:bg-white bg-[#006951] py-4 px-4 z-5 mt-2 text-white font-bold '>
-  
-    <div className="text-center mb-4">
-    <div className="text-center mb-4">Home</div>
-      <span className="inline-block relative z-20" onBlur={closeDropdown}>
-        <span onClick={toggleDropdown}>Services</span>
-        {dropdownOpen && (
-          <div className="absolute bg-white shadow-lg mt-2 py-2 w-48 rounded-lg border" onMouseLeave={closeDropdown}>
-            <Link to="/Consulting" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Consulting</Link>
-            <Link to="/reportandsubs" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reports and Subscriptions</Link>
-            <Link to="/Insights" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Insights</Link>
-          </div>
-        )}
-      </span>
-    </div>
-
-            <Link to ="/Joinus" className="text-center mb-4">Join Us</Link>
-            <Link to="/Industries" className="text-center mb-4">Industries</Link>
-    
-    <div className="text-center">
-      <Link to="/contactus">Contact</Link>
-    </div>
-  </div>
-</div>
-
-    </div>
+    </header>
   );
 };

@@ -38,6 +38,15 @@ module.exports = {
         SHADOW: "var(--SHADOW)",
         "text-shadow": "var(--text-shadow)",
       },
+      animation: {
+        marquee: 'marquee 15s linear infinite', // Custom marquee animation duration
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(100%)' }, // Start off-screen to the right
+          '100%': { transform: 'translateX(-100%)' }, // End off-screen to the left
+        },
+      },
     },
   },
   plugins: [],

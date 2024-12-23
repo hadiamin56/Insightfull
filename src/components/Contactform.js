@@ -19,7 +19,7 @@ const ContactForm = () => {
     };
 
     try {
-      // Send POST request to your local server (backend)
+      // Send POST request to the backend API
       const response = await fetch('http://localhost:5000/api/form', {
         method: 'POST',
         headers: {

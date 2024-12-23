@@ -16,10 +16,11 @@ export const ContactUs = () => {
         <Header />
         <TitleContact />
       </div>
+      
+      <Contactform />
       <div className="mt-5">
         <GetInTouch />
       </div>
-      <Contactform />
       <FooterCom />
     </>
   );

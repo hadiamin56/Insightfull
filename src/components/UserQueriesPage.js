@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Header } from "./common/Header";
 
 const UserQueriesPage = () => {
   const [queries, setQueries] = useState([]);
@@ -16,11 +17,12 @@ const UserQueriesPage = () => {
         console.error("Error fetching queries:", err);
       }
     };
-
     fetchQueries();
   }, []);
 
   return (
+    <div>
+      <Header/>
     <div className="min-h-screen flex items-center justify-center bg-gray-100 py-6">
       <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">User Queries</h2>
@@ -51,6 +53,7 @@ const UserQueriesPage = () => {
           </table>
         )}
       </div>
+    </div>
     </div>
   );
 };
