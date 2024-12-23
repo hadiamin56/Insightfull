@@ -13,7 +13,7 @@ const AdminLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/admin/login",
+        "https://insightfull.vercel.app/api/admin/login",
         { username, password },
         { withCredentials: true } // Ensures cookies are sent for session handling
       );
@@ -40,7 +40,7 @@ const AdminLogin = () => {
 
   const fetchUserQueries = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/admin/queries", {
+      const response = await axios.get("https://insightfull.vercel.app/api/admin/queries", {
         withCredentials: true,
       });
       console.log("Fetched Queries:", response.data);
