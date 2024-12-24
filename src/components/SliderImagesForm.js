@@ -12,68 +12,77 @@ const SliderImagesForm = () => {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false); // To toggle the details section
   const navigate = useNavigate();
 
-  // Fetch the images when the component loads
   useEffect(() => {
     const fetchImages = async () => {
       try {
         const response = await axios.get("http://localhost:5000/api/admin/getSliderImages");
+        console.log("Fetched Images:", response.data); // Log API response
+  
         if (Array.isArray(response.data)) {
-          setImages(response.data); // Store the fetched images
+          const processedImages = response.data.map((image) => ({
+            ...image,
+            image_url: `http://localhost:5000/${image.image_url}`, // Add full URL prefix
+          }));
+  
+          setImages(processedImages); // Store processed images
         } else {
           setErrorMessage("Unexpected data structure from API.");
         }
       } catch (err) {
+        console.error("Image Fetch Error:", err); // Log error for debugging
         setErrorMessage("Failed to load images. Please try again.");
       }
     };
-
+  
     fetchImages();
   }, []);
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    if (!images) {
+  
+    // Check if an image is selected
+    if (!image) {
       setErrorMessage("Image is required.");
       return;
     }
-
+  
+    // Create FormData object
     const formData = new FormData();
-    formData.append("image", images);
-
+    formData.append("image", image); // Ensure the key matches the backend expectation
+  
     try {
+      // Make POST request
       const response = await fetch("http://localhost:5000/api/admin/uploadSliderImage", {
         method: "POST",
         body: formData,
-        credentials: "include", // Ensure cookies or credentials are sent
       });
-
+  
       const data = await response.json();
-
+  
+      // Handle errors returned from server
       if (!response.ok) {
-        throw new Error(data.message);
+        throw new Error(data.error || "Failed to upload image.");
       }
-
+  
+      // Success handling
       setSuccessMessage(data.message);
       setErrorMessage("");
-      setImage(null); // Clear the selected image after successful upload
-
-      // Assuming the backend returns the full image URL in data.image.image_url
-      const newImage = data.image;
-
-      if (newImage && newImage.image_url) {
-        // Construct the full image URL
-        const fullImageUrl = `http://localhost:5000/${newImage.image_url}`;
-
-        // Immediately add the new image to the images list (this triggers a re-render)
-        setImages((prevImages) => [{ id: newImage.id, image_url: fullImageUrl }, ...prevImages]);
-      }
-
+  
+      // Add the new image to the images list
+      const newImage = data.image; // Response contains the image object
+      setImages((prevImages) => [
+        { id: newImage.id, image_url: `http://localhost:5000/${newImage.image_url}` },
+        ...prevImages,
+      ]);
+  
+      setImage(null); // Reset image input field
     } catch (error) {
-      setErrorMessage(error.message);
+      setErrorMessage(error.message || "Something went wrong.");
       setSuccessMessage("");
     }
   };
+  
 
   const handleDelete = async (id) => {
     try {
@@ -162,17 +171,18 @@ const SliderImagesForm = () => {
                     key={image?.id || Math.random()} 
                       className="border p-4 rounded-lg shadow-md"
                     >
-                      {image.image_url ? (
-                        <img
-                        src={`http://localhost:5000/${image.image_url}`}
-                        alt="Slider"
-                        className="w-full h-40 object-cover rounded-lg mb-4"
-                      />
-                      ) : (
-                        <div className="text-center text-gray-500">
-                          No image available
-                        </div>
-                      )}
+                     {image.image_url ? (
+  <img
+    src={image.image_url} // Use already prefixed URL
+    alt="Slider"
+    className="w-full h-40 object-cover rounded-lg mb-4"
+  />
+) : (
+  <div className="text-center text-gray-500">
+    No image available
+  </div>
+)}
+
 
                       <div className="text-center">
                         <button

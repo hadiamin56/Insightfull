@@ -33,7 +33,7 @@ const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
     ? process.env.NEXT_PUBLIC_FRONTEND_URL // Vercel URL in production
     : 'http://localhost:3000', // Local URL for development
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow DELETE method
+  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'], // Allow DELETE method
   allowedHeaders: ['Content-Type', 'Authorization'], // Headers to allow
   credentials: true, // Allow credentials to be true
 };
@@ -73,6 +73,7 @@ const db = mysql.createPool({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   waitForConnections: true,
+  connectTimeout: 10000, // 10 seconds
   connectionLimit: 10,
   queueLimit: 0,
 });
@@ -115,16 +116,44 @@ db.getConnection()
 // Define the /api/admin/queries endpoint
 app.get('/api/admin/queries', async (req, res) => {
   try {
-    const [results] = await db.query('SELECT * FROM user_queries'); // Use async/await with query
+    // Query to fetch results sorted by 'status' (0 at the top and 1 at the bottom)
+    const [results] = await db.query('SELECT * FROM user_queries ORDER BY status ASC');
     res.status(200).json(results); // Return the result as JSON
   } catch (err) {
     console.error('Error executing query:', err);
-    res.status(500).json({ 
-      error: 'Failed to fetch queries', 
-      details: err.message 
+    res.status(500).json({
+      error: 'Failed to fetch queries',
+      details: err.message
     });
   }
 });
+
+// PATCH route to update notes and status
+app.patch("/api/admin/updateQuery/:id", async (req, res) => {
+  const { id } = req.params;
+  const { notes, status } = req.body;
+
+  try {
+    const connection = await db.getConnection();
+
+    const query = `
+      UPDATE user_queries
+      SET notes = ?, status = ?, updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `;
+
+    await connection.execute(query, [notes, status, id]);
+    connection.release();
+
+    res.status(200).json({ message: "Query updated successfully!" });
+  } catch (error) {
+    console.error("Error updating query:", error);
+    res.status(500).json({ error: "Failed to update query" });
+  }
+});
+
+
+
 // Admin logout endpoint
 app.post('/api/admin/logout', (req, res) => {
   req.session.destroy((err) => {
@@ -173,7 +202,7 @@ app.post('/api/form', async (req, res) => {
   }
 
   // Insert form data into the database
-  const insertQuery = "INSERT INTO user_queries (name, email, contact, query) VALUES (?, ?, ?, ?)";
+  const insertQuery = "INSERT INTO user_queries (name, email, contact, query, created_at, updated_at) VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
   try {
     await db.query(insertQuery, [name, email, contact, query]);
     res.status(200).json({ message: "Your query has been submitted successfully!" });
@@ -210,56 +239,59 @@ app.delete('/api/admin/PrivateSectorDetails/:id', async (req, res) => {
   }
 });
 
-// POST route to handle image upload
 app.post("/api/admin/uploadSliderImage", uploadDisk.single("image"), async (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
   }
 
   const { filename } = req.file;
-  const imageUrl = "uploads/" + filename; // Create the relative path (e.g., "uploads/0ff1743a7c26231b62ab37855432ce82.png")
+  const imageUrl = "uploads/" + filename;
 
   try {
     console.log("File uploaded successfully:", filename);
 
-    // Insert image URL into the slider table in the database
-    const connection = await db.getConnection(); // Use 'db' instead of 'pool'
-    const query = `
-      INSERT INTO slider_table (image_url)
-      VALUES (?)
-    `;
-
-    // Execute the query with the relative image URL
-    await connection.execute(query, [imageUrl]);
-    connection.release(); // Release the connection back to the pool
+    // Insert image URL into the database
+    const connection = await db.getConnection();
+    const query = `INSERT INTO slider_table (image_url) VALUES (?)`;
+    const [result] = await connection.execute(query, [imageUrl]);
+    connection.release();
 
     res.status(200).json({
-      message: "File uploaded and image URL inserted into the database successfully",
-      imageUrl: imageUrl, // Send the relative URL back in the response
+      message: "File uploaded successfully.",
+      image: {
+        id: result.insertId, // Include the ID for frontend usage
+        image_url: imageUrl,
+      },
     });
   } catch (error) {
-    console.error("Error during file upload or DB insertion:", error);
-    res.status(500).json({ error: "Failed to upload image and insert URL into database", details: error.message });
+    console.error("Error:", error);
+    res.status(500).json({ error: "Failed to upload image.", details: error.message });
   }
 });
 
 
 
-// GET route to fetch all slider images
+
 app.get("/api/admin/getSliderImages", async (req, res) => {
   try {
-    // Query to get all slider images from the database
     const connection = await db.getConnection();
     const [rows] = await connection.execute("SELECT * FROM slider_table");
-    connection.release(); // Release the connection back to the pool
+    connection.release();
 
-    // Send the response with the images
+    // Log the rows fetched from the database
+    console.log("Fetched Images:", rows);
+
+    if (rows.length === 0) {
+      return res.status(200).json([]); // Send an empty array if no images found
+    }
+
     res.status(200).json(rows);
   } catch (error) {
     console.error("Error fetching slider images:", error);
     res.status(500).json({ error: "Failed to fetch images", details: error.message });
   }
 });
+
 // DELETE route to delete a slider image by its ID
 app.delete("/api/admin/deleteSliderImage/:id", async (req, res) => {
   const imageId = req.params.id;
