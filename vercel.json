@@ -10,10 +10,6 @@
         "use": "@vercel/static"
       },
       {
-        "src": "src/**/*",
-        "use": "@vercel/static"
-      },
-      {
         "src": "public/**/*",
         "use": "@vercel/static"
       }
@@ -28,13 +24,12 @@
         "dest": "/build/$1"
       },
       {
-        "src": "/src/(.*)",
-        "dest": "/src/$1"
-      },
-      {
         "src": "/public/(.*)",
         "dest": "/public/$1"
       }
-    ]
+    ],
+    "env": {
+      "NODE_ENV": "production"
+    }
   }
   
