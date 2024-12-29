@@ -67,7 +67,7 @@ const GalleryPage = () => {
             No images found.
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
             {images.map((image) => (
               <div
                 key={image.id}
@@ -99,7 +99,7 @@ const GalleryPage = () => {
           onClick={closeModal}
         >
           <div
-            className="relative bg-white p-6 rounded-lg max-w-3xl w-full cursor-pointer"
+            className="relative bg-green-500 p-6 rounded-lg max-w-3xl w-full cursor-pointer"
             onClick={(e) => e.stopPropagation()} // Prevent click from closing the modal
           >
             <img

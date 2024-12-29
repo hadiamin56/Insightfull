@@ -81,3 +81,99 @@
 .btn-submit:hover {
   background-color: #117a4b; /* Darken color on hover */
 }
+
+/* Loading Spinner Styles */
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+} */
+
+
+.fade-slider {
+  opacity: 0;
+  visibility: hidden; /* Hide the element completely */
+  transition: opacity 1s ease-in-out, visibility 0s 1s; /* Delay visibility change until opacity transition is done */
+}
+
+.fade-slider.active {
+  opacity: 1;
+  visibility: visible; /* Make content visible only after opacity transition */
+}
+
+.fade-slider img,
+.fade-slider .message-content {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease-in-out, visibility 0s 1s;
+}
+
+.fade-slider.active img,
+.fade-slider.active .message-content {
+  opacity: 1;
+  visibility: visible; /* Make content visible once opacity transition completes */
+}
+
+/* Marquee container setup */
+.marquee-container {
+  height: 420px; /* Make the marquee take full height of its container */
+  width: 100%;
+  overflow: hidden; /* Hide anything outside of the container */
+  position: relative;
+}
+
+/* The marquee list setup */
+.marquee {
+  list-style-type: disc; /* Use bullet points */
+  padding-left: 20px; /* Space for the bullet point */
+  margin: 0;
+  animation: marquee 10s linear infinite;
+ line-height: 100%;
+}
+
+/* Marquee item setup */
+.marquee-item {
+  padding: 5px 0;
+  font-size: 16px;
+  text-align: left; /* Align to the left for the bullet point */
+  position: relative;
+}
+
+/* Link styles */
+.notification-link {
+  text-decoration: none;
+  color: inherit; /* Inherit text color */
+}
+
+/* Pause animation on hover */
+.marquee-item.paused {
+  animation-play-state: paused;
+}
+
+/* Pause the animation of the entire marquee when hovering over any item */
+.marquee-container:hover .marquee {
+  animation-play-state: paused;
+}
+
+/* Animation for up to down scrolling */
+@keyframes marquee {
+  0% {
+    transform: translateY(-100%); /* Start off-screen at the top */
+  }
+  100% {
+    transform: translateY(100%); /* End off-screen at the bottom */
+  }
+}
+
