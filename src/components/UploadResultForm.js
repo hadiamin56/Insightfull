@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Header } from "./common/Header";
+import { FaUpload, FaCheck, FaExclamationCircle } from "react-icons/fa";
 
 const UploadResultsForm = () => {
   const [file, setFile] = useState(null);
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState([]);
   const [successes, setSuccesses] = useState([]);
-  const [records, setRecords] = useState([]); // State to store all records
+  const [records, setRecords] = useState([]);
 
-  // Handle file change
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setMessage("");
@@ -17,34 +17,24 @@ const UploadResultsForm = () => {
     setSuccesses([]);
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!file) {
       setMessage("Please select a file to upload.");
       return;
     }
-
     const formData = new FormData();
     formData.append("file", file);
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/upload-result",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const response = await axios.post("http://localhost:5000/upload-result", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       setMessage(response.data.message);
       setErrors(response.data.errors || []);
       setSuccesses(response.data.successes || []);
 
-      // Fetch all records after successful upload
       fetchAllRecords();
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -52,139 +42,111 @@ const UploadResultsForm = () => {
     }
   };
 
-  // Fetch all records
   const fetchAllRecords = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5000/api/results/all-results"
-      );
-      setRecords(response.data); // Store fetched records
+      const response = await axios.get("http://localhost:5000/api/results/all-results");
+      setRecords(response.data);
     } catch (error) {
       console.error("Error fetching results:", error);
       setMessage("Error fetching records.");
     }
   };
 
-  // Fetch records when component mounts
   useEffect(() => {
     fetchAllRecords();
   }, []);
 
   return (
     <div>
-      <Header/>
-    <div className="min-h-screen bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 flex flex-col items-center py-10">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg mb-10">
-        <h1 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Upload Student Results
-        </h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="block text-gray-700 font-medium mb-2">
-              Select Excel File
-            </label>
-            <input
-              type="file"
-              accept=".xlsx, .xls"
-              onChange={handleFileChange}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full py-3 px-6 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition duration-300"
-          >
-            Upload
-          </button>
-        </form>
+      <Header />
+      <div className="max-w-3xl mx-auto p-6 bg-white shadow-lg rounded-lg mt-10">
+        {/* Breadcrumb Navigation */}
+        <div className="mb-6 text-center">
+          <nav className="text-sm font-medium text-gray-600 inline-block">
+            <ol className="list-reset flex justify-center">
+              <li>
+                <a
+                  href="/Details"
+                  className="text-blue-500 hover:text-blue-700"
+                >
+                  Dashboard
+                </a>
+              </li>
+              <li>
+                <span className="mx-2">/</span>
+              </li>
+              <li className="text-gray-500">Results</li>
+            </ol>
+          </nav>
+        </div>
 
-        {message && (
-          <div className="mt-6">
-            <p
-              className={`text-center font-semibold ${
-                errors.length > 0 ? "text-red-600" : "text-green-600"
-              }`}
+        <h1 className="text-3xl font-semibold text-center mb-6 text-gray-800">Upload Student Results</h1>
+
+        {/* Upload Form */}
+        <div className="mb-8 p-6 border rounded-lg shadow-sm bg-gray-50">
+          <h2 className="text-xl font-medium mb-4">Upload Results File</h2>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="flex items-center space-x-4">
+              <input
+                type="file"
+                accept=".xlsx, .xls"
+                onChange={handleFileChange}
+                required
+                className="px-3 py-2 border rounded-md shadow-sm focus:ring-blue-500 focus:outline-none w-full"
+              />
+              <FaUpload className="text-blue-500 text-lg" />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition"
             >
-              {message}
+              Upload File
+            </button>
+          </form>
+          {message && (
+            <p className={`mt-4 text-center font-semibold ${errors.length > 0 ? "text-red-500" : "text-green-500"}`}>
+              {errors.length > 0 ? <FaExclamationCircle className="mr-2 text-lg" /> : <FaCheck className="mr-2 text-lg" />} {message}
             </p>
-          </div>
-        )}
+          )}
+        </div>
 
-        {errors.length > 0 && (
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold text-red-600">Errors:</h3>
-            <ul className="list-disc list-inside text-red-500">
-              {errors.map((error, index) => (
-                <li key={index}>{error}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {successes.length > 0 && (
-          <div className="mt-6">
-            <h3 className="text-lg font-semibold text-green-600">Successes:</h3>
-            <ul className="list-disc list-inside text-green-500">
-              {successes.map((success, index) => (
-                <li key={index}>{success}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-      </div>
-
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-6xl">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          All Student Records
-        </h2>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse border border-gray-300">
-            <thead className="bg-gray-800 text-white">
-              <tr>
-                <th className="py-3 px-4 border">Name</th>
-                <th className="py-3 px-4 border">Parentage</th>
-                <th className="py-3 px-4 border">Class</th>
-                <th className="py-3 px-4 border">Section</th>
-                <th className="py-3 px-4 border">Phone Number</th>
-                <th className="py-3 px-4 border">Roll No</th>
-                <th className="py-3 px-4 border">DOB</th>
-                <th className="py-3 px-4 border">Max Marks</th>
-                <th className="py-3 px-4 border">Marks Obtained</th>
-                <th className="py-3 px-4 border">Result</th>
-              </tr>
-            </thead>
-            <tbody>
-              {records.length > 0 ? (
-                records.map((record, index) => (
-                  <tr key={index} className="border">
-                    <td className="py-2 px-4 border">{record.name}</td>
-                    <td className="py-2 px-4 border">{record.parentage}</td>
-                    <td className="py-2 px-4 border">{record.class}</td>
-                    <td className="py-2 px-4 border">{record.section}</td>
-                    <td className="py-2 px-4 border">{record.phone_number}</td>
-                    <td className="py-2 px-4 border">{record.roll_no}</td>
-                    <td className="py-2 px-4">
-                      {record.dob
-                        ? new Date(record.dob).toLocaleDateString()
-                        : "N/A"}
-                    </td>{" "}
-                    <td className="py-2 px-4 border">{record.max_marks}</td>
-                    <td className="py-2 px-4 border">{record.marks_obtained}</td>
-                    <td className="py-2 px-4 border">{record.result}</td>
+        {/* View Records Section */}
+        <div>
+          <h2 className="text-xl font-medium mb-4">All Student Records</h2>
+          <div className="overflow-y-auto max-h-[500px] border rounded-lg shadow-sm p-4 bg-gray-50">
+            {records.length === 0 ? (
+              <p className="text-gray-500 text-center py-6">No records found.</p>
+            ) : (
+              <table className="min-w-full border-collapse border border-gray-300">
+                <thead className="bg-gray-800 text-white">
+                  <tr>
+                    <th className="py-3 px-4 border">Name</th>
+                    <th className="py-3 px-4 border">Parentage</th>
+                    <th className="py-3 px-4 border">Class</th>
+                    <th className="py-3 px-4 border">Section</th>
+                    <th className="py-3 px-4 border">R.No</th>
+                    <th className="py-3 px-4 border">Marks </th>
+                    <th className="py-3 px-4 border">Result</th>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="10" className="text-center py-4 text-gray-500">
-                    No records found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                </thead>
+                <tbody>
+                  {records.map((record, index) => (
+                    <tr key={index} className="border">
+                      <td className="py-2 px-4 border">{record.name}</td>
+                      <td className="py-2 px-4 border">{record.parentage}</td>
+                      <td className="py-2 px-4 border">{record.class}</td>
+                      <td className="py-2 px-4 border">{record.section}</td>
+                      <td className="py-2 px-4 border">{record.roll_no}</td>
+                      <td className="py-2 px-4 border">{record.marks_obtained}/{record.max_marks}</td>
+                      <td className="py-2 px-4 border">{record.result}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

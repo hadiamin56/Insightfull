@@ -1,10 +1,10 @@
 import React from 'react';
+import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Homepage } from './components/Homepage'; // Import your Homepage component
 import { ContactUs } from './components/ContactUs'; // Import your ContactUs component
 import { Industries } from './components/Industries';
 import { Reportssubs } from './components/Reportssubs';
-import './App.css';
 import { Consulting } from './components/Consulting';
 import { Insights } from './components/Insights';
 import { Joinus } from './components/Joinus';
@@ -20,7 +20,13 @@ import Results from './components/Results';
 import MultipleImageUploadForm from './components/MultipleImageUploadForm';
 import GalleryPage from './components/GalleryPage';
 import NotificationForm from './components/NotificationForm';
-import NotificationMarquee from './components/NotificationMarquee';
+// import NotificationMarquee from './components/NotificationMarquee';
+import StudentLeaderboard from './components/StudentLeaderboard';
+import LeaderboardCards from './components/LeaderboardCards';
+import ManagementMessages from './components/messagenotification';
+import UpNotificationMarquee from './components/UpNotificationMarquee';
+
+
 
 function App() {
   return (
@@ -45,14 +51,11 @@ function App() {
         <Route path="/MultipleImageUploadForm" element={<MultipleImageUploadForm />} />
         <Route path="/ViewGallery" element={<GalleryPage />} />
         <Route path="/NotificationForm" element={<NotificationForm/>} />
-        <Route path="/NotificationMarquee" element={<NotificationMarquee/>} />
-
-
-
-
-
-
-
+        {/* <Route path="/NotificationMarquee" element={<NotificationMarquee/>} /> */}
+        <Route path="/Leaderboardform" element={<StudentLeaderboard/>} />
+        <Route path="/Leaderboard" element={<LeaderboardCards/>} />
+        <Route path="/ManagementMessages" element={<ManagementMessages/>} /> 
+        <Route path="/UpNotificationMarquee" element={<UpNotificationMarquee/>} /> 
 
       </Routes>
     </Router>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios'; // Axios for API calls
+import { FaSearch } from 'react-icons/fa';
 
 export const SlideInfo = () => {
   const [images, setImages] = useState([]); // Dynamic images from API
@@ -28,12 +29,10 @@ export const SlideInfo = () => {
     fetchImages();
   }, []);
 
-  // Next image handler
   const nextImage = useCallback(() => {
     setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
   }, [images.length]);
 
-  // Previous image handler
   const prevImage = useCallback(() => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
@@ -62,7 +61,7 @@ export const SlideInfo = () => {
 
   return (
     <div className="relative w-full h-[600px] overflow-hidden">
-      {/* Slider Image */}
+      {/* Hero Image or Video */}
       <div
         className="w-full h-full bg-cover bg-center transition-all duration-500 ease-in-out"
         style={{
@@ -93,6 +92,7 @@ export const SlideInfo = () => {
           </div>
         </div>
       </div>
+
       {/* Navigation Arrows */}
       {images.length > 0 && (
         <>

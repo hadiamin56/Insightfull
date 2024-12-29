@@ -40,35 +40,46 @@ export const PracticeSectors = () => {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row md:flex-col lg:flex-row items-center justify-center gap-[40px] p-5">
-      {sectors.map((sector, index) => (
-        <div
-          key={sector.id || index}
-          className="flex flex-col md:flex-row gap-[50px] w-fit p-2"
-        >
-          <div className="shadow-md shadow-black-600 w-[232px]">
-            <a href="#">
-              <div className="flex flex-col px-6">
-                <h2 className="text-md font-bold mt-5 rubik-maintitle">
-                  {sector.title || "N/A"}
-                </h2>
-                <p className="text-sm mt-5 text-gray-600 rubik-subtitle">
-                  {sector.description || "No description available."}
-                </p>
-              </div>
+    <div className="p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+        {sectors.map((sector, index) => (
+          <div
+            key={sector.id || index}
+            className="group relative overflow-hidden bg-white rounded-3xl shadow-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl"
+          >
+            {/* Image Section */}
+            <div className="w-full h-64 relative">
               <img
                 src={
                   sector.image
                     ? `http://localhost:5000/${sector.image.replace(/\\/g, "/")}`
                     : "assets/practice.jpg" // Fallback image if none is provided
                 }
-                className="w-[230px] h-[138px] mt-5"
+                className="object-cover w-full h-full transition-all duration-300 group-hover:opacity-80"
                 alt={sector.title || "Sector"}
               />
-            </a>
+              {/* Overlay for better contrast */}
+              <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-t from-black to-transparent opacity-30"></div>
+            </div>
+
+            {/* Card Content */}
+            <div className="p-6 relative z-10">
+              <h2 className="text-2xl font-semibold text-gray-800 group-hover:text-blue-600 transition-colors mb-4">
+                {sector.title || "N/A"}
+              </h2>
+              <p className="text-sm text-gray-600 group-hover:text-gray-800 transition-colors mb-6">
+                {sector.description || "No description available."}
+              </p>
+              <a
+                href="#"
+                className="inline-block text-blue-500 font-semibold hover:text-blue-700 transition-colors"
+              >
+                Learn More
+              </a>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Header } from "./common/Header";
-import { FaCheckCircle, FaRegCircle } from "react-icons/fa"; // Import icons
+import { FaCheckCircle, FaRegCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const UserQueriesPage = () => {
   const [queries, setQueries] = useState([]);
@@ -24,7 +25,6 @@ const UserQueriesPage = () => {
     fetchQueries();
   }, []);
 
-  // Handle Note Change
   const handleNoteChange = (id, value) => {
     setNotes((prevNotes) => ({
       ...prevNotes,
@@ -33,39 +33,33 @@ const UserQueriesPage = () => {
   };
 
   const handleMarkAsDone = async (id) => {
-    // Optimistically update the status in the UI
     setStatus((prevStatus) => ({
       ...prevStatus,
-      [id]: !prevStatus[id], // Toggle the status immediately
+      [id]: !prevStatus[id],
     }));
 
     try {
-      // Update the status and notes on the backend
       await axios.patch(`http://localhost:5000/api/admin/updateQuery/${id}`, {
-        notes: notes[id] || "", // Send the note or empty string
-        status: !status[id], // Toggle status
+        notes: notes[id] || "",
+        status: !status[id],
       });
 
-      // Refetch the query after successfully updating it
       const response = await axios.get(
         "http://localhost:5000/api/admin/queries"
       );
-      setQueries(response.data); // Update the queries state with the latest data
+      setQueries(response.data);
     } catch (error) {
       console.error("Error updating query:", error);
-
-      // If there's an error, revert the status back to the original state
       setStatus((prevStatus) => ({
         ...prevStatus,
-        [id]: !prevStatus[id], // Revert the toggle
+        [id]: !prevStatus[id],
       }));
     }
   };
 
-  // Function to format the date
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleString(); // Adjust this format as needed
+    return date.toLocaleString();
   };
 
   return (
@@ -73,6 +67,26 @@ const UserQueriesPage = () => {
       <Header />
       <div className="min-h-screen flex items-center justify-center bg-gray-100 py-6">
         <div className="w-full max-w-6xl bg-white shadow-lg rounded-lg p-6">
+          {/* Breadcrumb added inside the table wrapper */}
+          <div className="mb-6 text-center">
+            <nav className="text-sm font-medium text-gray-600 inline-block">
+              <ol className="list-reset flex justify-center">
+                <li>
+                  <Link
+                    to="/Details"
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li>
+                  <span className="mx-2">/</span>
+                </li>
+                <li className="text-gray-500">User Queries</li>
+              </ol>
+            </nav>
+          </div>
+
           <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
             User Queries
           </h2>
