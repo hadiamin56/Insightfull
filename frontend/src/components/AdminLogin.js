@@ -13,7 +13,7 @@ const AdminLogin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/admin/login",
+        "https://insightfull-backend.vercel.app/api/admin/login",
         { username, password },
         { withCredentials: true } // Ensures cookies are sent for session handling
       );
