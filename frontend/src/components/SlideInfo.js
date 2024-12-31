@@ -12,9 +12,9 @@ export const SlideInfo = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/admin/getSliderImages');
+        const response = await axios.get('https://insightfull-backend.vercel.app/api/admin/getSliderImages');
         if (Array.isArray(response.data)) {
-          const imageUrls = response.data.map((item) => `http://localhost:5000/${item.image_url}`);
+          const imageUrls = response.data.map((item) => `https://insightfull-backend.vercel.app/${item.image_url}`);
           setImages(imageUrls);
         } else {
           setError('Unexpected data structure from API.');
