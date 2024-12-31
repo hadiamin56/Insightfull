@@ -25,9 +25,6 @@ import StudentLeaderboard from './components/StudentLeaderboard';
 import LeaderboardCards from './components/LeaderboardCards';
 import ManagementMessages from './components/messagenotification';
 import UpNotificationMarquee from './components/UpNotificationMarquee';
-
-
-
 function App() {
   return (
     <Router>

@@ -1,5 +1,6 @@
 require("dotenv").config(); // Load environment variables
 const express = require("express");
+const serverless = require('serverless-http');
 const bodyParser = require("body-parser");
 const mysql = require('mysql2/promise'); // Use the promise version of mysql2
 const session = require("express-session");
@@ -541,7 +542,7 @@ app.get("/api/admin/imagesGallery", async (req, res) => {
     // Map the rows to include full URLs for each image, and include the id
     const images = rows.map((row) => ({
       id: row.id, // Include the image ID
-      image_url: `http://localhost:5000/${row.image_path}`, // Adjust the URL
+      image_url: `https://insightfull-backend.vercel.appgit/${row.image_path}`, // Adjust the URL
       image_title: row.image_title,
       event_title: row.event_title, // Ensure event_title is mapped
       date: row.date, // Ensure date is mapped
@@ -787,7 +788,5 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-module.exports = app;
-module.exports = (req, res) => {
-  res.status(200).json({ message: 'Hello from Backend!' });
-};
+
+module.exports.handler = serverless(app);
